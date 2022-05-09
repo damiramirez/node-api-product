@@ -6,6 +6,7 @@ const {
   update,
   remove,
 } = require('../services/userService');
+const Success = require('../helpers/successHelper');
 
 /**
  *
@@ -15,7 +16,7 @@ const {
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await findAll();
-    res.json(users);
+    res.json(new Success(users));
   } catch (err) {
     next(err);
   }
@@ -30,7 +31,7 @@ const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const user = await findById(id);
-    res.json(user);
+    res.json(new Success(user));
   } catch (err) {
     next(err);
   }
@@ -46,7 +47,7 @@ const createUser = async (req, res, next) => {
     const user = req.body;
     const newUser = await create(user);
 
-    res.status(201).json(newUser);
+    res.status(201).json(new Success(newUser));
   } catch (err) {
     next(err);
   }
@@ -64,7 +65,7 @@ const updateUser = async (req, res, next) => {
 
     const updatedUser = await update(id, user);
 
-    res.json(updatedUser);
+    res.json(new Success(updatedUser));
   } catch (err) {
     next(err);
   }
@@ -76,7 +77,7 @@ const deleteUser = async (req, res, next) => {
 
     const user = await remove(id);
 
-    res.json(user);
+    res.json(new Success(user));
   } catch (err) {
     next(err);
   }
