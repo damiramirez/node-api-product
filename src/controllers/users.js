@@ -15,7 +15,8 @@ const Success = require('../helpers/successHelper');
  */
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await findAll();
+    const { filter, options } = req.query;
+    const users = await findAll(req.query.filter, req.query.options);
     res.json(new Success(users));
   } catch (err) {
     next(err);

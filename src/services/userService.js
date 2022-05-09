@@ -6,8 +6,8 @@ const findById = async (id) => {
   return await repository.findById(id);
 };
 
-const findAll = async () => {
-  return await repository.findAll();
+const findAll = async (filter, options) => {
+  return await repository.findAllPaginate(filter, options);
 };
 
 const create = async (user) => {
