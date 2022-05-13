@@ -49,6 +49,7 @@ class ExpressServer {
         errror: {
           code,
           message: err.message,
+          detail: err.data,
         },
       };
       res.status(code).json(body);

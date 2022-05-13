@@ -6,6 +6,10 @@ const findById = async (id) => {
   return await repository.findById(id);
 };
 
+const findByEmail = async (email) => {
+  return await repository.findByEmail(email);
+};
+
 const findAll = async (filter, options) => {
   return await repository.findAllPaginate(filter, options);
 };
@@ -24,6 +28,7 @@ const remove = async (id) => {
 
 module.exports = {
   findById,
+  findByEmail,
   findAll,
   create,
   update,
