@@ -1,7 +1,9 @@
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 const { ROLES } = require('../../constant');
 const AppError = require('../../errors/appError');
 const { findByEmail, findById } = require('../../services/userService');
+const { validJWT } = require('../auth');
+const { validResult } = require('../commons');
 
 const _nameRequired = check('name', 'Name is required').not().isEmpty();
 const _lastnameRequired = check('lastname', 'Lastname is required')
@@ -36,13 +38,7 @@ const _roleValid = check('role')
       throw new AppError('Invalid role', 400);
     }
   });
-const _validationResult = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    throw new AppError(`Validation Errors`, 400, errors.errors);
-  }
-  next();
-};
+
 const _birthdateValid = check('birthdate', 'Invalid Date')
   .optional()
   .isDate('MM-DD-YYYY');
@@ -57,6 +53,7 @@ const _idExist = check('id').custom(async (id = '') => {
 });
 
 const postValidations = [
+  validJWT,
   _nameRequired,
   _lastnameRequired,
   _emailRequired,
@@ -65,10 +62,11 @@ const postValidations = [
   _passwordRequired,
   _roleValid,
   _birthdateValid,
-  _validationResult,
+  validResult,
 ];
 
 const putValidations = [
+  validJWT,
   _idExist,
   _idRequired,
   _idIsMoongoDB,
@@ -76,7 +74,7 @@ const putValidations = [
   _optionalEmailUnique,
   _roleValid,
   _birthdateValid,
-  _validationResult,
+  validResult,
 ];
 
 module.exports = {
