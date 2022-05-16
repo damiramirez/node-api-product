@@ -1,6 +1,6 @@
 const { check } = require('express-validator');
 const { validResult } = require('../commons');
-const { validToken } = require('../../services/authService');
+const { validToken, validRole } = require('../../services/authService');
 
 const _emailRequired = check('email', 'Email is required').not().isEmpty();
 const _emailValid = check('email', 'Email invalid').isEmail();
@@ -26,7 +26,19 @@ const validJWT = async (req, res, next) => {
   }
 };
 
+const hasRole = (...roles) => {
+  return (req, res, next) => {
+    try {
+      validRole(req.user, ...roles);
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
+};
+
 module.exports = {
   postRequestValidation,
   validJWT,
+  hasRole,
 };
